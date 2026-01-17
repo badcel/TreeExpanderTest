@@ -56,6 +56,7 @@ bin/Debug/net10.0/runtimes
 
 TreeExpander
 TreeExpander.*
+TreeExpander.assets.cache
 TreeExpander.AssemblyInfo.cs
 Configurator4
 Configurator4.exe
