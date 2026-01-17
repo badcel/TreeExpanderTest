@@ -33,26 +33,6 @@ ComparisonAnalize.xml
 InformationSchema.xml
 ConfigurationParam.xml
 
-bin/Debug/net10.0/cs
-bin/Debug/net10.0/de
-bin/Debug/net10.0/es
-bin/Debug/net10.0/fr
-bin/Debug/net10.0/it
-bin/Debug/net10.0/ja
-bin/Debug/net10.0/ko
-bin/Debug/net10.0/pl
-bin/Debug/net10.0/pt-BR
-bin/Debug/net10.0/ru
-bin/Debug/net10.0/tr
-bin/Debug/net10.0/zh-Hans
-bin/Debug/net10.0/zh-Hant
-
-
-old
-obj/
-obj/Debug/*.*
-bin/Debug/net10.0/LatoFont
-bin/Debug/net10.0/runtimes
 
 TreeExpander
 TreeExpander.*
@@ -78,7 +58,7 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-#[Bb]in/
+[Bb]in/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
@@ -412,3 +392,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/.idea/.idea.TreeExpanderTest-badcel.dir/.idea/.gitignore
+/.idea/.idea.TreeExpanderTest-badcel.dir/.idea/copilot.data.migration.ask2agent.xml
+/.idea/.idea.TreeExpanderTest-badcel.dir/.idea/encodings.xml
+/.idea/.idea.TreeExpanderTest-badcel.dir/.idea/indexLayout.xml
+/.idea/.idea.TreeExpanderTest-badcel.dir/.idea/vcs.xml
