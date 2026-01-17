@@ -38,7 +38,7 @@ class FormWindow : Window
         {
             Data data = new($"Name {i}");
 
-            for (int j = 0; j < 100; j++)
+            for (int j = 0; j < 200; j++)
                 data.Value.Add($"Child {i}-{j}", new($"Name {i}"));
 
             List.Add(data);
