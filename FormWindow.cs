@@ -24,11 +24,11 @@ class FormWindow : Window
     private void OnClicked(Button button, EventArgs args)
     {
         List<Data> List = [];
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             Data data = new($"Name {i}");
 
-            for (int j = 0; j < 200; j++)
+            for (var j = 0; j < 200; j++)
                 data.Value.Add($"Child {i}-{j}", new($"Name {i}"));
 
             List.Add(data);
@@ -48,20 +48,19 @@ class FormWindow : Window
                 Obj = data
             });
 
-        TreeListModel list = TreeListModel.New(store, false, false, CreateFunc);
-
+        var list = TreeListModel.New(store, false, false, CreateFunc);
         var model = SingleSelection.New(list);
         var columnView = ColumnView.New(model);
 
         var factory = SignalListItemFactory.New();
         factory.OnSetup += (_, args) =>
         {
-            var listItem = (ListItem)args.Object;
             var cell = Label.New(null);
 
             var expander = TreeExpander.New();
             expander.SetChild(cell);
 
+             var listItem = (ListItem)args.Object;
             listItem.SetChild(expander);
         };
 
@@ -96,9 +95,9 @@ class FormWindow : Window
 
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
 
-        foreach (KeyValuePair<string, Data> field in data.Value)
+        foreach (var field in data.Value)
         {
-            store.Append(new ConfiguratorItemRow()
+            store.Append(new ConfiguratorItemRow
             {
                 Name = field.Key,
                 Obj = field.Value,
