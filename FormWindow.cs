@@ -14,7 +14,7 @@ class FormWindow : Window
         Button button = Button.NewWithLabel("Button");
         button.OnClicked += OnClicked;
         
-        Box vBox = Box.New(Vertical, 0);
+        var vBox = Box.New(Vertical, 0);
         vBox.Append(button);
         vBox.Append(notebook);
         
@@ -23,7 +23,14 @@ class FormWindow : Window
 
     private void OnClicked(Button button, EventArgs args)
     {
-        List<Data> List = [];
+        
+
+        notebook.AppendPage(Fill(), Label.New("Page"));
+    }
+
+    private static Widget Fill()
+    {
+        List<Data> dataList = [];
         for (var i = 0; i < 10; i++)
         {
             Data data = new($"Name {i}");
@@ -31,14 +38,9 @@ class FormWindow : Window
             for (var j = 0; j < 200; j++)
                 data.Value.Add($"Child {i}-{j}", new($"Name {i}"));
 
-            List.Add(data);
+            dataList.Add(data);
         }
-
-        notebook.AppendPage(Fill(List), Label.New("Page"));
-    }
-
-    private static Widget Fill(List<Data> dataList)
-    {
+        
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
 
         foreach (Data data in dataList)
