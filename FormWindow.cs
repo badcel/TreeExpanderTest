@@ -71,7 +71,7 @@ class FormWindow : Window
         column.Resizable = true;
         columnView.AppendColumn(column);
 
-        ScrolledWindow scroll = new();
+        var scroll = new ScrolledWindow();
         scroll.Vexpand = scroll.Hexpand = true;
         scroll.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
         scroll.Child = columnView;
