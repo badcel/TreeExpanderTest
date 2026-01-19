@@ -11,5 +11,5 @@ partial class ConfiguratorItemRow
     /// <summary>
     /// Об'єкт
     /// </summary>
-    public object? Obj { get; set; } = null;
+    public List<ConfiguratorItemRow> Sub { get; set; } = [];
 }

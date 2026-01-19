@@ -11,7 +11,7 @@ class FormWindow : Window
         Title = "Window";
         SetDefaultSize(800, 800);
 
-        Button button = Button.NewWithLabel("Button");
+        var button = Button.NewWithLabel("Button");
         button.OnClicked += OnClicked;
         
         var vBox = Box.New(Vertical, 0);
@@ -28,26 +28,16 @@ class FormWindow : Window
 
     private static Widget Fill()
     {
-        List<Data> dataList = [];
-        for (var i = 0; i < 10; i++)
-        {
-            Data data = new($"Name {i}");
-
-            for (var j = 0; j < 200; j++)
-                data.Value.Add($"Child {i}-{j}", new($"Name {i}"));
-
-            dataList.Add(data);
-        }
-        
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
 
-        foreach (Data data in dataList)
+        for (var i = 0; i < 10; i++)
         {
-            store.Append(new ConfiguratorItemRow
-            {
-                Name = data.Name,
-                Obj = data
-            });
+            var item = new ConfiguratorItemRow { Name = $"Name {i}" };
+            
+            for (var j = 0; j < 200; j++)
+                item.Sub.Add(new ConfiguratorItemRow { Name = $"Child {i}-{j}" }); 
+            
+            store.Append(item);
         }
 
         var list = TreeListModel.New(store, false, false, CreateFunc);
@@ -93,18 +83,10 @@ class FormWindow : Window
     {
         var itemRow = (ConfiguratorItemRow)item;
 
-        var data = itemRow.Obj as Data;
-
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
 
-        foreach (var field in data.Value)
-        {
-            store.Append(new ConfiguratorItemRow
-            {
-                Name = field.Key,
-                Obj = field.Value,
-            });
-        }
+        foreach (var subElement in itemRow.Sub)
+            store.Append(subElement);
 
         return store;
     }
