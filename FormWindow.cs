@@ -23,8 +23,6 @@ class FormWindow : Window
 
     private void OnClicked(Button button, EventArgs args)
     {
-        Box vBox = Box.New(Vertical, 0);
-
         List<Data> List = [];
         for (int i = 0; i < 10; i++)
         {
@@ -36,67 +34,58 @@ class FormWindow : Window
             List.Add(data);
         }
 
-        vBox.Append(Fill(List));
-
-        notebook.AppendPage(vBox, Label.New("Page"));
+        notebook.AppendPage(Fill(List), Label.New("Page"));
     }
 
-    private Box Fill(List<Data> dataList)
+    private static Widget Fill(List<Data> dataList)
     {
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
-        var hBox = Box.New(Orientation.Horizontal, 0);
 
         foreach (Data data in dataList)
             store.Append(new ConfiguratorItemRow
             {
-                Group = "Documents",
                 Name = data.Name,
                 Obj = data
             });
 
         TreeListModel list = TreeListModel.New(store, false, false, CreateFunc);
 
-        SingleSelection model = SingleSelection.New(list);
-        ColumnView columnView = ColumnView.New(model);
+        var model = SingleSelection.New(list);
+        var columnView = ColumnView.New(model);
 
-        //Tree
+        var factory = SignalListItemFactory.New();
+        factory.OnSetup += (_, args) =>
         {
-            SignalListItemFactory factory = SignalListItemFactory.New();
-            factory.OnSetup += (_, args) =>
-            {
-                ListItem listItem = (ListItem)args.Object;
-                var cell = Label.New(null);
+            var listItem = (ListItem)args.Object;
+            var cell = Label.New(null);
 
-                TreeExpander expander = TreeExpander.New();
-                expander.SetChild(cell);
+            var expander = TreeExpander.New();
+            expander.SetChild(cell);
 
-                listItem.SetChild(expander);
-            };
+            listItem.SetChild(expander);
+        };
 
-            factory.OnBind += (_, args) =>
-            {
-                if (args.Object is not ListItem listItem) return;
-                if (listItem.GetItem() is not TreeListRow row) return;
-                if (listItem.GetChild() is not TreeExpander expander) return;
-                if (expander.GetChild() is not Label cell) return;
-                if (row.GetItem() is not ConfiguratorItemRow itemRow) return;
+        factory.OnBind += (_, args) =>
+        {
+            if (args.Object is not ListItem listItem) return;
+            if (listItem.GetItem() is not TreeListRow row) return;
+            if (listItem.GetChild() is not TreeExpander expander) return;
+            if (expander.GetChild() is not Label cell) return;
+            if (row.GetItem() is not ConfiguratorItemRow itemRow) return;
 
-                expander.SetListRow(row);
-                cell.SetText(itemRow.Name);
-            };
-            var column = ColumnViewColumn.New("Documents", factory);
-            column.Resizable = true;
-            columnView.AppendColumn(column);
-        }
+            expander.SetListRow(row);
+            cell.SetText(itemRow.Name);
+        };
+        var column = ColumnViewColumn.New("Documents", factory);
+        column.Resizable = true;
+        columnView.AppendColumn(column);
 
         ScrolledWindow scroll = new();
         scroll.Vexpand = scroll.Hexpand = true;
         scroll.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
         scroll.Child = columnView;
 
-        hBox.Append(scroll);
-
-        return hBox;
+        return scroll;
     }
 
     private static Gio.ListModel CreateFunc(GObject.Object item)
@@ -105,20 +94,17 @@ class FormWindow : Window
 
         var data = itemRow.Obj as Data;
 
-        Gio.ListStore Store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
+        var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
 
         foreach (KeyValuePair<string, Data> field in data.Value)
         {
-            Store.Append(new ConfiguratorItemRow()
+            store.Append(new ConfiguratorItemRow()
             {
-                Group = "Field",
                 Name = field.Key,
                 Obj = field.Value,
-                Type = "Type",
-                Desc = "Pointer"
             });
         }
 
-        return Store;
+        return store;
     }
 }
