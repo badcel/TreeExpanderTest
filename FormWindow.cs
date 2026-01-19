@@ -23,8 +23,6 @@ class FormWindow : Window
 
     private void OnClicked(Button button, EventArgs args)
     {
-        
-
         notebook.AppendPage(Fill(), Label.New("Page"));
     }
 
@@ -44,11 +42,13 @@ class FormWindow : Window
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
 
         foreach (Data data in dataList)
+        {
             store.Append(new ConfiguratorItemRow
             {
                 Name = data.Name,
                 Obj = data
             });
+        }
 
         var list = TreeListModel.New(store, false, false, CreateFunc);
         var model = SingleSelection.New(list);
