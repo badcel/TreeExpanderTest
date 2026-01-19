@@ -11,25 +11,19 @@ class FormWindow : Window
         Title = "Window";
         SetDefaultSize(800, 800);
 
-        Box vBox = Box.New(Vertical, 0);
-        Child = vBox;
-
         Button button = Button.NewWithLabel("Button");
-        button.OnClicked += A;
-
-        Box hBox = Box.New(Horizontal, 10);
-        hBox.Append(button);
-
-        vBox.Append(hBox);
+        button.OnClicked += OnClicked;
+        
+        Box vBox = Box.New(Vertical, 0);
+        vBox.Append(button);
         vBox.Append(notebook);
+        
+        Child = vBox;
     }
 
-    void A(Button button, EventArgs args)
+    private void OnClicked(Button button, EventArgs args)
     {
         Box vBox = Box.New(Vertical, 0);
-
-        Box hBox = Box.New(Horizontal, 0);
-        vBox.Append(hBox);
 
         List<Data> List = [];
         for (int i = 0; i < 10; i++)
@@ -50,11 +44,10 @@ class FormWindow : Window
     private Box Fill(List<Data> dataList)
     {
         var store = Gio.ListStore.New(ConfiguratorItemRow.GetGType());
-        Box hBox = Box.New(Orientation.Horizontal, 0);
+        var hBox = Box.New(Orientation.Horizontal, 0);
 
-        //Заповнення сховища початковими даними
         foreach (Data data in dataList)
-            store.Append(new ConfiguratorItemRow()
+            store.Append(new ConfiguratorItemRow
             {
                 Group = "Documents",
                 Name = data.Name,
@@ -106,9 +99,9 @@ class FormWindow : Window
         return hBox;
     }
 
-    Gio.ListModel? CreateFunc(GObject.Object item)
+    private static Gio.ListModel CreateFunc(GObject.Object item)
     {
-        ConfiguratorItemRow itemRow = (ConfiguratorItemRow)item;
+        var itemRow = (ConfiguratorItemRow)item;
 
         var data = itemRow.Obj as Data;
 
